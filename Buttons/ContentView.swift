@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct ContentView : View {
+    
+    @State var subscribed = false
     var body: some View {
         VStack {
             Image("swift")
@@ -24,16 +26,24 @@ struct ContentView : View {
             .font(.body)
             .foregroundColor(.secondary)
             
+            // This will only get rendered when the state changes to subscribed.
+            if subscribed {
+                Text("Thanks for subscribing to our course.")
+                .padding(.top, 20)
+            }
+            
             Button(action: {
                 print("Hello")
+                    self.subscribed.toggle()
             }) {
-                Text("Subscribe Now")
+                Text(subscribed ? "Success!" : "Subscribe Now")
                 .foregroundColor(.white)
+                .animation(.none)
                 .padding(10)
                 .frame(width: 200)
                 .cornerRadius(20)
-                .border(Color.blue, width: 1, cornerRadius: 20)
-                .background(Color.blue)
+                .border(subscribed ? Color.green : Color.blue, width: 1, cornerRadius: 20)
+                .background(subscribed ? Color.green : Color.blue)
                 .cornerRadius(20)
                 .shadow(radius: 2)
             }
@@ -51,12 +61,8 @@ struct ContentView : View {
 #if DEBUG
 struct ContentView_Previews : PreviewProvider {
     static var previews: some View {
-        Group {
             ContentView()
                 .environment(\.colorScheme, .light)
-            ContentView()
-                .environment(\.colorScheme, .dark)
-        }
        
     }
 }
